@@ -2,6 +2,8 @@
 一个简单的crm。  
 # 描述及功能
 - 这是一个简易的crm
+- 使用django完成
+- 前端使用bootstrap和jQuery
 - 使用redis存放sesseion
 - 顾客增删改查
 - 员工增删改查

@@ -1,0 +1,451 @@
+{% extends "layout/base.html" %}
+{% block title %}
+        <title>职员管理</title>
+{% endblock %}
+{% block body %}
+
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <button class="btn btn-primary btn-lg  btn-success" data-toggle="modal" data-target="#myModal" type="button">
+        添加职员
+    </button>
+    <span class="alert" role="alert" id="tipsSeccess"></span>
+    <!-- 模态框（Modal） -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        添加新职员
+                    </h4>
+
+                </div>
+                <div class="modal-body">
+
+                    <form class="form-horizontal" id="addUserForm">
+                        {% csrf_token %}
+                         <div class="form-group">
+                            <label for="email" class="col-sm-2 control-label">邮箱</label>
+                            <div class="col-sm-10">
+                                <input type="email" class="form-control" id="email" name="email"
+                                       placeholder="请输入邮箱" required="required">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="username" class="col-sm-2 control-label">用户名</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="username" name="username"
+                                       placeholder="请输入用户名" required="required">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="pwd" class="col-sm-2 control-label">密码</label>
+                            <div class="col-sm-10">
+                                <input type="password" class="form-control" id="pwd" name="password"
+                                       placeholder="请输入密码" required="required">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="note" class="col-sm-2 control-label">备注</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="note" name="note" placeholder="没备注留空呗"
+                                       value="">
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+
+                                    <label class="radio-inline">
+                                        <input type="radio" name="role" id="roleTeacher" value="1">
+                                        老师
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="role" id="roleFinance" value="2">
+                                        财务
+                                    </label>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+
+
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                    </button>
+                    <button type="button" class="btn btn-primary" id="submitBtn">
+                        提交
+                    </button>
+                    <div class="alert" role="alert" id="tipsError"></div>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+
+    <!-- 修改 modal -->
+
+    <div class="modal fade" id="changeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        修改职员
+                    </h4>
+
+                </div>
+                <div class="modal-body">
+
+                    <form class="form-horizontal" id="changeUserForm">
+                        {% csrf_token %}
+
+
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+
+
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                    </button>
+                    <button type="button" class="btn btn-primary" id="submitChangeBtn">
+                        提交修改
+                    </button>
+                    <div class="alert" role="alert" id="tipsChangeError"></div>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+    <!-- 修改密码 modal -->
+
+    <div class="modal fade" id="changePasswordModal" tabindex="-1" role="dialog"
+         aria-labelledby="changePasswordModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="changePasswordModalLabel">
+
+                    </h4>
+
+                </div>
+                <div class="modal-body">
+
+                    <form class="form-horizontal" id="changePasswordForm">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="pwd1" class="col-sm-2 control-label">密码</label>
+                            <div class="col-sm-10">
+                                <input type="password" class="form-control" id="pwd1" name="password1"
+                                       placeholder="请输入密码" required="required">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="pwd2" class="col-sm-2 control-label">重复密码</label>
+                            <div class="col-sm-10">
+                                <input type="password" class="form-control" id="pwd2" name="password2"
+                                       placeholder="请再次输入密码" required="required">
+                            </div>
+                        </div>
+
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+
+
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                    </button>
+                    <button type="button" class="btn btn-primary" id="submitChangePasswordBtn">
+                        提交修改
+                    </button>
+                    <div class="alert" role="alert" id="tipsChangePasswordError"></div>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+
+
+    <!-- 删除 modal -->
+
+
+    <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" id="delModal">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="alert" role="alert">你确定要删除此职员吗?</div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消
+                </button>
+                <button type="button" class="btn btn-danger" id="makeSureDel">
+                    确认
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div style="min-height: 500px">
+
+    <table class="table table-hove">
+        <tr>
+            <th>序号</th>
+            <th>名字</th>
+            <th>入职时间</th>
+            <th>备注</th>
+            <th>操作</th>
+        </tr>
+        {% for u in u_model %}
+            <tr>
+                <td> {{ forloop.counter }}</td>
+                <td class="editable" name="username">{{ u.username }}</td>
+                <td>{{ u.entry_time | date:"Y-m-d H:i:s" }}</td>
+                <td class="editable" name="note">{{ u.note }}</td>
+
+                <td><span class="glyphicon glyphicon-pencil" aria-hidden="true" onclick="changeData(this, {{ u.id }})"
+                          id="changeBtn" data-toggle="tooltip" data-placement="top" title="修改职员信息"></span>
+
+                    <span class="glyphicon glyphicon-trash" aria-hidden="true" onclick="delData(this, {{ u.id }})"
+                          id="delBtn" data-toggle="tooltip" data-placement="top" title="删除职员"></span>
+                    <span class="glyphicon glyphicon-asterisk" aria-hidden="true"
+                          onclick="changePwd(this,{{ u.id }}, '{{ u.username }}')"
+                          id="changePassword" data-toggle="tooltip" data-placement="top" title="修改密码"></span>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    </div>
+        <nav aria-label="Page navigation">
+        <ul class="pagination">
+            {{ page_li|safe }}
+        </ul>
+    </nav>
+    <script>
+        $('#submitBtn').click(function () {
+            $.ajax({
+                url: "{% url 'web:staff_add' %}",
+                type: 'post',
+                data: {
+                    csrfmiddlewaretoken: $("[name='csrfmiddlewaretoken']").val(),
+
+                    email: $('#addUserForm [name="email"]').val(),
+                    username: $('#addUserForm [name="username"]').val(),
+                    password: $('#addUserForm [name="password"]').val(),
+                    note: $('#addUserForm [name="note"]').val(),
+                    role: $('#addUserForm [name="role"]:checked').val(),
+                },
+                dataType: "Json",
+                success: function (data) {
+                    if (data.status === 200) {
+                        $("#myModal").modal('hide');
+
+                        let e = $("#tipsSeccess")
+                        e.addClass("alert-success")
+                        e.text("添加成功")
+
+                        setTimeout(function () {
+                            e.removeClass("alert-success")
+                            e.text("")
+                            location.reload();
+                        }, 1000)
+
+                    } else {
+                        let e = $("#tipsError")
+                        e.addClass("alert-danger")
+                        e.text(data.msg)
+
+                        setTimeout(function () {
+                            e.removeClass("alert-danger")
+                            e.text("")
+                        }, 2000)
+                    }
+                }
+            })
+        })
+
+        $('#submitChangeBtn').click(function () {
+
+            $.ajax({
+                url: "{% url 'web:staff_edit' %}",
+                type: 'post',
+                data: {
+                    csrfmiddlewaretoken: $("[name='csrfmiddlewaretoken']").val(),
+                    username: $('#changeUserForm [name="username"]').val(),
+                    note: $('#changeUserForm [name="note"]').val(),
+                    uid: $('#changeUserForm [name="uid"]').val(),
+                },
+                dataType: "Json",
+                success: function (data) {
+                    if (data.status === 200) {
+                        $("#changeModal").modal('hide');
+
+                        let e = $("#tipsSeccess")
+                        e.addClass("alert-success")
+                        e.text("修改成功")
+
+                        setTimeout(function () {
+                            e.removeClass("alert-success")
+                            e.text("")
+                            location.reload();
+                        }, 1000)
+
+                    } else {
+                        let e = $("#tipsChangeError")
+                        e.addClass("alert-danger")
+                        e.text(data.msg)
+
+                        setTimeout(function () {
+                            e.removeClass("alert-danger")
+                            e.text("")
+                        }, 2000)
+                    }
+                }
+            })
+        })
+
+        $("#submitChangePasswordBtn").click(function () {
+           $.ajax({
+                url: "{% url 'web:staff_change_password' %}",
+                type: 'post',
+                data: {
+                    csrfmiddlewaretoken: $("[name='csrfmiddlewaretoken']").val(),
+                    pwd1: $('#changePasswordForm [name="password1"]').val(),
+                    pwd2: $('#changePasswordForm [name="password2"]').val(),
+                    uid: $("#submitChangePasswordBtn").attr("uid")
+                },
+                dataType: "Json",
+                success: function (data) {
+                    if (data.status === 200) {
+                        $("#changePasswordModal").modal('hide');
+
+                        let e = $("#tipsSeccess")
+                        e.addClass("alert-success")
+                        e.text("修改密码成功")
+
+                        setTimeout(function () {
+                            e.removeClass("alert-success")
+                            e.text("")
+                        }, 2000)
+
+                    } else {
+                        let e = $("#tipsChangePasswordError")
+                        e.addClass("alert-danger")
+                        e.text(data.msg)
+
+                        setTimeout(function () {
+                            e.removeClass("alert-danger")
+                            e.text("")
+                        }, 2000)
+                    }
+                }
+            })
+        })
+
+
+
+        function changeData(e, uid) {
+            let tr = $(e).parent().parent()
+            $("#changeUserForm input").each(function (index, e) {
+                if (index !== 0) {
+                    $(e).remove()
+                }
+            })
+            let inp = $("<input>").attr("name", "uid").val(uid).addClass("hide")
+            $("#changeUserForm").append(inp)
+            tr.children(".editable").each(function (index, td) {
+                    // 改变为input
+                    td = $(td)
+
+
+                    let inp = $("<input>")
+                    inp.prop("id", "change_" + td.attr("name"))
+
+                    inp.attr("type", "text").attr("name", td.attr("name")).attr("origin", td.text())
+                    inp.addClass("form-control")
+                    inp.val(td.text())
+
+                    $("#changeUserForm").append(inp)
+
+
+                    $("#changeModal").modal("show")
+                }
+            );
+
+        }
+
+        function delData(e, uid) {
+            $("#delModal").modal("show")
+            $("#makeSureDel").attr("uid", uid)
+        }
+
+        $("#makeSureDel").click(
+            function () {
+                let uid = $("#makeSureDel").attr("uid");
+                $("#delModal").modal("hide")
+                $.ajax(
+                    {
+                        url: "{% url 'web:staff_del' %}",
+                        type: 'POST',
+                        data: {
+                            csrfmiddlewaretoken: $("[name='csrfmiddlewaretoken']").val(),
+                            uid: uid
+                        },
+                        dataType: "Json",
+                        success: function (data) {
+                            if (data.status === 200) {
+
+                                let e = $("#tipsSeccess")
+                                e.addClass("alert-success")
+                                e.text("已删除")
+
+                                setTimeout(function () {
+                                    e.removeClass("alert-success")
+                                    e.text("")
+                                    location.reload();
+                                }, 1000)
+
+                            } else {
+                                let e = $("#tipsSeccess")
+                                e.addClass("alert-danger")
+                                e.text(data.msg)
+
+                                setTimeout(function () {
+                                    e.removeClass("alert-danger")
+                                    e.text("")
+                                }, 2000)
+                            }
+                        }
+                    })
+            }
+        )
+
+        function changePwd(e, uid, username) {
+            $("#changePasswordModal").modal("show");
+            $("#changePasswordModalLabel").text("修改" + username + "的密码");
+            $("#submitChangePasswordBtn").attr("uid", uid);
+            //清空之前的数据
+            $('#changePasswordForm [name="password1"]').val("")
+            $('#changePasswordForm [name="password2"]').val("")
+        }
+
+
+
+    </script>
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends "layout/base.html" %}
+
+
+
+
+
+
+{% block pic %}
+    <div id="main" style="width: 600px;height: 400px;"></div>
+
+    <script src="https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js"></script>
+    <script>
+        //将echart初始化到div中
+        var myChart = echarts.init(document.getElementById('main'));
+        //指定图表的配置项和数据
+        var option = {
+            title: {
+                text: '近一周用户量'
+            },
+            tooltip: {},
+            legend: {
+                data: ['已付费', "未付费"]
+            },
+            xAxis: {
+                data: {{ date_data|safe }}
+            },
+            yAxis: {},
+            series: {{ data|safe }}
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+
+    </script>
+{% endblock %}

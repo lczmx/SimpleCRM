@@ -1,0 +1,38 @@
+{% extends "layout/base.html" %}
+{% block  title %}
+    <title>客户管理</title>
+{% endblock %}
+{% block body %}
+    <div style="min-height: 500px">
+    <table class="table table-hover">
+        <tr>
+            <th>序号</th>
+            <th>用户名</th>
+            <th>住址</th>
+            <th>电话号码</th>
+            <th>已缴费</th>
+        </tr>
+
+        {% for c in c_obj %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ c.username }}</td>
+                <td>{{ c.addr }}</td>
+                <td>{{ c.phone_number }}</td>
+                {% if c.money %}
+                    <td><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></td>
+                {% else %}
+                    <td><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></td>
+                {% endif %}
+                <td></td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    </div>
+    <nav aria-label="Page navigation">
+  <ul class="pagination">
+    {{ page_li|safe }}
+  </ul>
+    </nav>
+{% endblock %}

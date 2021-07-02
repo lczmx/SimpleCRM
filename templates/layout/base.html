@@ -1,0 +1,368 @@
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="https://cdn.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.10/favicon.ico">
+    <link rel="canonical" href="https://getbootstrap.com/docs/3.4/examples/jumbotron-narrow/">
+    {% block title %}
+            <title>CRM项目</title>
+
+    {% endblock %}
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.10/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="https://cdn.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.10/assets/css/ie10-viewport-bug-workaround.css"
+          rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="https://cdn.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.10/examples/jumbotron-narrow/jumbotron-narrow.css"
+          rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.10/assets/js/ie8-responsive-file-warning.js"></script>
+    <![endif]-->
+    <script src="https://cdn.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.10/assets/js/ie-emulation-modes-warning.js"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    {% block js %}
+    {% endblock %}
+
+
+    <![endif]-->
+    <style id="5f0e8012-95c9-4a24-a549-e79b63d332e3">html, :not([class*="rwl-exempt"]) {
+        -webkit-user-select: text !important;
+        -moz-user-select: text !important;
+    }
+
+    :not([class*="rwl-exempt"]) ::selection {
+        color: #fff;
+        background: #3390FF !important;
+    }</style>
+</head>
+<remove-web-limits-iqxin id="rwl-iqxin" class="rwl-exempt" style="position: fixed; top: 1px; left: 0px;">
+    <qxinbutton type="qxinbutton" id="rwl-setbtn"> set</qxinbutton>
+    <lalala style="cursor:move; font-size:12px;">限制解除</lalala>
+    <input type="checkbox" name="" id="black_node">
+    <style type="text/css">#rwl-iqxin {
+        position: fixed;
+        transform: translate(-95px, 0);
+        width: 85px;
+        height: 25px;
+        font-size: 12px;
+        font-weight: 500;
+        font-family: Verdana, Arial, '宋体';
+        color: #fff;
+        background: #333;
+        z-index: 2147483647;
+        margin: 0;
+        opacity: 0.05;
+        transition: 0.3s;
+        overflow: hidden;
+        user-select: none;
+        text-align: center;
+        white-space: nowrap;
+        line-height: 25px;
+        padding: 0 16px;
+        border: 1px solid #ccc;
+        border-width: 1px 1px 1px 0;
+        border-bottom-right-radius: 5px;
+        box-sizing: content-box;
+    }
+
+    #rwl-iqxin input {
+        margin: 0;
+        padding: 0;
+        vertical-align: middle;
+        -webkit-appearance: checkbox;
+        -moz-appearance: checkbox;
+        position: static;
+        clip: auto;
+        opacity: 1;
+        cursor: pointer;
+    }
+
+    #rwl-iqxin.rwl-active-iqxin {
+        left: 0px;
+        transform: translate(0, 0);
+        opacity: 0.9;
+        height: 32px;
+        line-height: 32px
+    }
+
+    #rwl-iqxin label {
+        margin: 0;
+        padding: 0;
+        font-weight: 500;
+    }
+
+    #rwl-iqxin #rwl-setbtn {
+        margin: 0 4px 0 0;
+        padding: 0 0 0 4px;
+        border: none;
+        border-radius: 2px;
+        cursor: pointer;
+        background: #fff;
+        color: #000;
+    } </style>
+</remove-web-limits-iqxin>
+
+<body>
+
+<div class="modal fade" id="showMsgModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="showMsgModalLabel">
+                </h4>
+
+            </div>
+            <div class="modal-body" id="showMsgModalBody" style="min-height: 400px">
+
+
+            </div>
+            <div class="modal-footer">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination" id="pagination">
+                    </ul>
+                </nav>
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+<div class="container">
+    <div class="header clearfix">
+        <nav>
+            <ul class="nav nav-pills pull-right">
+                {% if request.session.user_data.role == "boss" %}
+                    {% if now_page ==  "staff_list" %}
+                        <li role="presentation"
+                            onclick="showMsg('{{ request.session.user_data.role }}', '{% url "web:showmsg" %}', 1)"
+                            data-toggle="tooltip" data-placement="bottom" title="查看消息"
+                        ><span class="glyphicon glyphicon-info-sign" aria-hidden="true"
+                               style="color:green;font-size:28px;margin-right: 20px"></span></li>
+                        <li role="presentation" class="active"><a href="{% url "web:staff_list" %}">员工管理</a></li>
+                        <li role="presentation"><a href="{% url 'web:payment_list' %}">账单管理</a></li>
+                        <li role="presentation"><a href="{% url "web:customer_list" %}">客户管理</a></li>
+                    {% elif now_page ==  "payment_list" %}
+                        <li role="presentation"
+                            onclick="showMsg('{{ request.session.user_data.role }}', '{% url "web:showmsg" %}', 1)"
+                            data-toggle="tooltip" data-placement="bottom" title="查看消息"
+                        ><span class="glyphicon glyphicon-info-sign" aria-hidden="true"
+                               style="color:green;font-size:28px;margin-right: 20px"></span></li>
+
+                        <li role="presentation"><a href="{% url "web:staff_list" %}">员工管理</a></li>
+                        <li role="presentation" class="active"><a href="{% url 'web:payment_list' %}">账单管理</a></li>
+                        <li role="presentation"><a href="{% url "web:customer_list" %}">客户管理</a></li>
+                    {% elif now_page ==  "customer_list" %}
+                        <li role="presentation"
+                            onclick="showMsg('{{ request.session.user_data.role }}', '{% url "web:showmsg" %}', 1)"
+                            data-toggle="tooltip" data-placement="bottom" title="查看消息"
+                        ><span class="glyphicon glyphicon-info-sign" aria-hidden="true"
+                               style="color:green;font-size:28px;margin-right: 20px"></span></li>
+
+                        <li role="presentation"><a href="{% url "web:staff_list" %}">员工管理</a></li>
+                        <li role="presentation"><a href="{% url 'web:payment_list' %}">账单管理</a></li>
+                        <li role="presentation" class="active"><a href="{% url "web:customer_list" %}">客户管理</a></li>
+                    {% elif now_page == "index" %}
+                        <li role="presentation"
+                            onclick="showMsg('{{ request.session.user_data.role }}', '{% url "web:showmsg" %}', 1)"
+                            data-toggle="tooltip" data-placement="bottom" title="查看消息"
+                        ><span class="glyphicon glyphicon-info-sign" aria-hidden="true"
+                               style="color:green;font-size:28px;margin-right: 20px"></span></li>
+
+                        <li role="presentation"><a href="{% url "web:staff_list" %}">员工管理</a></li>
+                        <li role="presentation"><a href="{% url 'web:payment_list' %}">账单管理</a></li>
+                        <li role="presentation"><a href="{% url "web:customer_list" %}">客户管理</a></li>
+                    {% endif %}
+
+
+                {% endif %}
+
+                {% if request.session.user_data.role == "teacher" %}
+
+                    {% if now_page ==  "customer_list" %}
+
+                        <li role="presentation" class="active"><a href="{% url "web:customer_list" %}">客户管理</a></li>
+                    {% endif %}
+
+                    {% if now_page == "index" %}
+
+                        <li role="presentation"><a href="{% url "web:customer_list" %}">客户管理</a></li>
+                    {% endif %}
+
+                {% endif %}
+
+                {% if request.session.user_data.role == "finance" %}
+                    {% if now_page ==  "payment_list" %}
+                        <li role="presentation" class="active"><a href="{% url 'web:payment_list' %}">账单管理</a></li>
+                    {% endif %}
+                    {% if now_page == "index" %}
+                        <li role="presentation"><a href="{% url 'web:payment_list' %}">账单管理</a></li>
+                    {% endif %}
+                {% endif %}
+
+                {% if request.session.user_data.user_id %}
+                    <li role="presentation" class="active" onmousemove="changeLiconent()" onmouseleave="resetLiconet()">
+
+                        <a href="javascript:void(0);" id="userMsgA">{{ request.session.user_data.username }}</a></li>
+                {% else %}
+                    <li role="presentation" class="active"><a href="{% url  "web:login" %}">登录</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+        <h3 class="text-muted"><a href="/">CRM主页</a></h3>
+    </div>
+
+
+    {% block pic %}
+
+    {% endblock %}
+    <div class="row marketing" style="min-height: 500px">
+        {% block body %}
+            <div class="col-lg-6">
+                <h4>crm项目</h4>
+                <p>有人说，知识就是力量。对我来说，知识就是幸福。有了知识，你就可以区别真理和谬误，可以分清高尚与渺小。当你了解到各个时期人们的思想行为时，你就会对发展到今天的人类产生同情和亲近的感情</p>
+
+                <h4>crm项目</h4>
+                <p>一个人光溜溜地到这个世界上来，最后光溜溜地离开这个世界而去，彻底想起来，名利都是身外物，只有尽一个人的心力，使社会上的人多得他工作的裨益，是人生最愉快的事情。</p>
+
+                <h4>crm项目</h4>
+                <p>读书使人充实，讨论使人机智，笔记使人准确，读史使人明智，读诗使人灵秀，数学使人周密，科学使人深刻，伦理使人庄重，逻辑修辞使人善辩。凡有所学，皆成性格。</p>
+            </div>
+
+            <div class="col-lg-6">
+                <h4>crm项目</h4>
+                <p>
+                    人的一生，总是难免有浮沉。不会永远如旭日东升，也不会永远痛苦潦倒。反复地一浮一沉，对于一个人来说，正是磨练。因此，浮在上面的，的，不必骄傲；沉在底下的，更用不着悲观。必须以率直、谦虚的态度，乐观进取、向前迈进。</p>
+
+                <h4>crm项目</h4>
+                <p>
+                    凡是对人类生活提高最有贡献的人，应当是最受爱戴的人，这在原则上是对的。但是如果要求别人承认自己比同伴或者同学更高更强，或者更有才智，那就容易在心理上产生惟我独尊的态度，这无论对个人对社会都是有害的。</p>
+
+                <h4>crm项目</h4>
+                <p>世界上没有任何欢乐不伴随忧虑，没有任何和平不连着纠纷，没有任何爱情不埋下猜疑，没有任何安宁不隐伏恐惧，没有任何满足不带有缺陷，没有任何荣誉不留下耻辱。</p>
+            </div>
+        {% endblock %}
+    </div>
+
+
+<footer class="footer">
+        <div class="text-center"><p class="container"><a href="https://github.com/lczmx/SimpleCRM">lczmx的crm项目</a></p>
+        </div>
+    </footer>
+
+</div> <!-- /container -->
+
+
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="https://cdn.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.10/assets/js/ie10-viewport-bug-workaround.js"></script>
+<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script>
+    function changeLiconent() {
+        document.getElementById("userMsgA").href = '{% url "web:logout" %}'
+        document.getElementById("userMsgA").innerText = '退出登录'
+    }
+
+    function resetLiconet() {
+        document.getElementById("userMsgA").href = 'javascript:void(0);'
+        document.getElementById("userMsgA").innerText = '{{request.session.user_data.username}}'
+    }
+
+    function showMsg(role, url, page) {
+        $("#showMsgModal").modal("show")
+        if (role === "boss") {
+
+            $.ajax({
+                url: url + "?page=" + page,
+                type: "get",
+                dataType: "Json",
+                success: function (res) {
+
+
+                    if (res.status === 200) {
+                        let data = res.data
+                        var table = $("<table>")
+                        let tr_h = $("<tr>")
+                        table.addClass("table")
+                        tr_h.html("<th>处理者</th><th>用户</th><th>事件</th><th>时间</th>")
+                        table.html(tr_h)
+
+                        $.each(data, function (index, d) {
+                            let tr_d = $("<tr>")
+                            tr_d.append($("<td>").text(d["operator"])).append($("<td>").text(d["customer"])).append($("<td>").text(d["action"])).append($("<td>").text(d["operator_time"]))
+                            let level = d["level"]
+                            if (level === 2) {
+                                tr_d.addClass("warning")
+                            } else if (level === 3) {
+                                tr_d.addClass("danger")
+                            }
+
+                            if (!d["read_msg"]) {
+                                // <span class="label label-danger">5</span>
+                                let s = $("<span>")
+                                s.addClass("label-danger").addClass("label").addClass("align-self-center")
+                                s.text("new")
+                                tr_d.append(s)
+
+                            }
+
+                            table.append(tr_d)
+
+                        });
+                        $("#showMsgModalBody").html(table);
+                        $("#showMsgModalLabel").text("消息（" + res["unread"] + "条未读）");
+                        $("#pagination").html(res["page_li"])
+                        listenLi(role)
+                        // 为每个li绑定事件
+
+
+                    } else {
+                        alert(res.msg)
+                    }
+
+
+                }
+
+
+            })
+
+
+        }
+    }
+
+
+    function listenLi(role) {
+        $("#pagination li a").each(function (i, e) {
+
+            $(e).click(function () {
+                showMsg(role, {% url "web:showmsg" %}, $(e).attr("to-pager"))
+            })
+        })
+    }
+
+    $(function () {
+        $("[data-toggle='tooltip']").tooltip();
+    });
+
+
+</script>
+</body>
+</html>

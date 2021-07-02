@@ -1,0 +1,347 @@
+{% extends "layout/base.html" %}
+{% block title %}
+        <title>账单管理</title>
+{% endblock %}
+
+{% block body %}
+
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <button class="btn btn-primary btn-lg  btn-success" data-toggle="modal" data-target="#addModal" type="button">
+        添加新用户
+    </button>
+    <span class="alert" role="alert" id="tipsSeccess"></span>
+    <!-- 模态框（Modal） -->
+    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="addModalLabel">
+                        添加新用户
+                    </h4>
+
+                </div>
+                <div class="modal-body">
+
+                    <form class="form-horizontal" id="addUserForm">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="username" class="col-sm-2 control-label">用户名</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="username" name="username"
+                                       placeholder="请输入用户名">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="addr" class="col-sm-2 control-label">住址</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="addr" name="addr" placeholder="请输入住址">
+                            </div>
+                        </div>
+
+                                               <div class="form-group">
+                            <label for="phone_number" class="col-sm-2 control-label">住址</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="phone_number" name="phone_number" placeholder="电话号码">
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="money" class="col-sm-2 control-label">已缴金额</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="money" name="money" placeholder="请输入缴费多少"
+                                       value="0">
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+
+
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                    </button>
+                    <button type="button" class="btn btn-primary" id="submitBtn">
+                        提交
+                    </button>
+                    <div class="alert" role="alert" id="tipsError"></div>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+
+
+    <div class="modal fade" id="changeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        修改用户
+                    </h4>
+
+                </div>
+                <div class="modal-body">
+
+                    <form class="form-horizontal" id="changeUserForm">
+                        {% csrf_token %}
+
+
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+
+
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                    </button>
+                    <button type="button" class="btn btn-primary" id="submitChangeBtn">
+                        提交修改
+                    </button>
+                    <div class="alert" role="alert" id="tipsChangeError"></div>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+
+
+    <!-- 删除 modal -->
+
+
+    <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" id="delModal">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="alert" role="alert">你确定要删除次条数据吗?</div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消
+                </button>
+                <button type="button" class="btn btn-danger" id="makeSureDel">
+                    确认
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <div style="min-height: 500px">
+
+
+        <table class="table table-hove">
+            <tr>
+                <th>序号</th>
+                <th>用户名</th>
+                <th>住址</th>
+                <th>电话号码</th>
+                <th>缴费金额</th>
+                <th>缴费时间</th>
+                <th>操作</th>
+            </tr>
+
+            {% for c in c_model %}
+                <tr>
+                    <td> {{ forloop.counter }}</td>
+                    <td class="editable" name="username">{{ c.username }}</td>
+                    <td class="editable" name="addr">{{ c.addr }}</td>
+                    <td class="editable" name="phone_number">{{ c.phone_number }}</td>
+                    <td class="editable" name="money">{{ c.money }}</td>
+                    <td> {% if c.money %}
+                        {{ c.play_time | date:"Y-m-d H:i:s" }}
+                    {% else %}
+                        暂未缴费
+                    {% endif %} </td>
+                    <td><span class="glyphicon glyphicon-pencil" aria-hidden="true"
+                              onclick="changeData(this, {{ c.id }})"
+                              id="changeBtn"></span>
+                        <span class="glyphicon glyphicon-trash" aria-hidden="true" onclick="delData(this, {{ c.id }})"
+                              id="delBtn"></span>
+                        <span class="glyphicon glyphicon-ok hide" aria-hidden="true" onclick="postData()"
+                              id="postBtn"></span>
+                        <span class="glyphicon glyphicon-remove hide" aria-hidden="true" onclick="cancelEdit()"
+                              id="cancelBtn"></span>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            {{ page_li|safe }}
+        </ul>
+    </nav>
+
+    <script>
+        $('#submitBtn').click(function () {
+            $.ajax({
+                url: "{% url 'web:payment_add' %}",
+                type: 'post',
+                data: {
+                    csrfmiddlewaretoken: $("[name='csrfmiddlewaretoken']").val(),
+                    username: $('#addUserForm [name="username"]').val(),
+                    addr: $('#addUserForm [name="addr"]').val(),
+                    phone_number: $('#addUserForm [name="phone_number"]').val(),
+                    money: $('#addUserForm [name="money"]').val(),
+                },
+                dataType: "Json",
+                success: function (data) {
+                    if (data.status === 200) {
+                        $("#addModal").modal('hide');
+
+                        let e = $("#tipsSeccess")
+                        e.addClass("alert-success")
+                        e.text("添加成功")
+
+                        setTimeout(function () {
+                            e.removeClass("alert-success")
+                            e.text("")
+                            location.reload();
+                        }, 1000)
+
+                    } else {
+                        let e = $("#tipsError")
+                        e.addClass("alert-danger")
+                        e.text(data.msg)
+
+                        setTimeout(function () {
+                            e.removeClass("alert-danger")
+                            e.text("")
+                        }, 2000)
+                    }
+                }
+            })
+        })
+
+        $('#submitChangeBtn').click(function () {
+
+            $.ajax({
+                url: "{% url 'web:payment_edit' %}",
+                type: 'post',
+                data: {
+                    csrfmiddlewaretoken: $("[name='csrfmiddlewaretoken']").val(),
+                    username: $('#changeUserForm [name="username"]').val(),
+                    addr: $('#changeUserForm [name="addr"]').val(),
+                    phone_number: $('#changeUserForm [name="phone_number"]').val(),
+                    money: $('#changeUserForm [name="money"]').val(),
+                    uid: $('#changeUserForm [name="uid"]').val(),
+                },
+                dataType: "Json",
+                success: function (data) {
+                    if (data.status === 200) {
+                        $("#changeModal").modal('hide');
+
+                        let e = $("#tipsSeccess")
+                        e.addClass("alert-success")
+                        e.text("修改成功")
+
+                        setTimeout(function () {
+                            e.removeClass("alert-success")
+                            e.text("")
+                            location.reload();
+                        }, 1000)
+
+                    } else {
+                        let e = $("#tipsChangeError")
+                        e.addClass("alert-danger")
+                        e.text(data.msg)
+
+                        setTimeout(function () {
+                            e.removeClass("alert-danger")
+                            e.text("")
+                        }, 2000)
+                    }
+                }
+            })
+        })
+
+
+        function changeData(e, uid) {
+            let tr = $(e).parent().parent()
+            $("#changeUserForm input").each(function (index, e) {
+                if (index !== 0) {
+                    $(e).remove()
+                }
+            })
+            let inp = $("<input>").attr("name", "uid").val(uid).addClass("hide")
+            $("#changeUserForm").append(inp)
+            tr.children(".editable").each(function (index, td) {
+                    // 改变为input
+                    td = $(td)
+
+
+                    let inp = $("<input>")
+                    inp.prop("id", "change_" + td.attr("name"))
+
+                    inp.attr("type", "text").attr("name", td.attr("name")).attr("origin", td.text())
+                    inp.addClass("form-control")
+                    inp.val(td.text())
+
+                    $("#changeUserForm").append(inp)
+
+
+                    $("#changeModal").modal("show")
+                }
+            );
+
+        }
+
+        function delData(e, uid) {
+            $("#delModal").modal("show")
+            $("#makeSureDel").attr("uid", uid)
+        }
+
+        $("#makeSureDel").click(
+            function () {
+                let uid = $("#makeSureDel").attr("uid");
+                $("#delModal").modal("hide")
+                $.ajax(
+                    {
+                        url: "{% url 'web:payment_del' %}",
+                        type: 'POST',
+                        data: {
+                            csrfmiddlewaretoken: $("[name='csrfmiddlewaretoken']").val(),
+                            uid: uid
+                        },
+                        dataType: "Json",
+                        success: function (data) {
+                            if (data.status === 200) {
+
+                                let e = $("#tipsSeccess")
+                                e.addClass("alert-success")
+                                e.text("已删除")
+
+                                setTimeout(function () {
+                                    e.removeClass("alert-success")
+                                    e.text("")
+                                    location.reload();
+                                }, 1000)
+
+                            } else {
+                                let e = $("#tipsSeccess")
+                                e.addClass("alert-danger")
+                                e.text(data.msg)
+
+                                setTimeout(function () {
+                                    e.removeClass("alert-danger")
+                                    e.text("")
+                                }, 2000)
+                            }
+                        }
+                    })
+            }
+        )
+
+
+    </script>
+{% endblock %}

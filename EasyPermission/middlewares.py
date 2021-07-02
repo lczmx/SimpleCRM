@@ -29,11 +29,9 @@ class AuthUserMiddleWare(MiddlewareMixin):
         if path in filter_list and path not in exclude_list:
             auth_user_id = easy_perm.get_user_func(request)  # 获取用户的ID
             if not auth_user_id:  # 没有用户id，要求登录
-                print(easy_perm.settings.get("LOGIN_PATH_URL"))
                 return redirect(easy_perm.settings.get("LOGIN_PATH_URL"))
             # 已经登录，获取permission_list
             permission_list = request.session.get("permission_list")
-            print(permission_list)
             if permission_list is None:
                 del request.session["user_data"]  # 删除user_id, 要求重新登录
                 return redirect(easy_perm.settings.get("LOGIN_PATH_URL") + "?next=%s" % request.path)

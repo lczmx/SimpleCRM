@@ -60,7 +60,6 @@ class EasyPermission:
          ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         返回 PermissionData对象， 里面封装一条权限数据
         """
-        print("one_perm:", one_perm)
         temp = {"url": one_perm.permission.url, "is_re": one_perm.permission.is_re, "method": one_perm.action.method,
                 "parent_id": None, "name": one_perm.caption, "status": False, "detail": {}, "hook": []}
         if one_perm.permission.parent_id:
@@ -158,7 +157,6 @@ class EasyPermission:
             self.distinct(one_perm, "u")
         for one_perm in group_permissions:  # 验证用户的组权限
             self.distinct(one_perm, "g")
-        print(self.permission_list)
         if serial:
             return self.permission_seri
         return self.permission_list
@@ -184,7 +182,6 @@ class EasyPermission:
             self._current_permission = permission  # 每次都会覆盖上一次的 PermissionData对象
             if self.shunt(request):  # 开始正式验证
                 if self.is_create_menus():  # 判断是否生成菜单
-                    print("生成菜单")
                     # 生成菜单 并 写入到request对象里
                     # 若匹配成了， 则 permission 则为当前url对应的对象
 
@@ -277,14 +274,12 @@ class EasyPermission:
                             return False
                         break  # 找到一个hook_dir后将不会继续往下找, 继续下一个hook
                 except ImportError as e:
-                    print(e)
                     pass
         return True
 
     def is_create_menus(self):
         """判断是否生成菜单"""
         if self.settings.get("CREATE_MENU"):
-            print("------------------")
             if hasattr(self.settings, "CREATE_MENU_FUNC_NAME"):  # 有指定的views函数，生成菜单标签
                 if self.func_name not in self.settings.get("CREATE_MENU_FUNC_NAME") \
                         and self.settings.get("CREATE_MENU_FUNC_NAME"):
@@ -354,7 +349,6 @@ class CreateMenu:
         self.models = models
         self._re_type_url_parent_id = set()
         self.active_permission = active_permission
-        print("tree")
         request._menu_str = self.active()
 
     def active(self):
